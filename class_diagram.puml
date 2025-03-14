@@ -1,0 +1,128 @@
+@startuml
+class User {
+    -int userId
+    -String username
+    -String email
+    -String password
+    -List<Pet> ownedPets
+    +login()
+    +register()
+    +adoptPet(species)
+    +selectActivePet(petId)
+    +viewPetStats()
+}
+
+class Pet {
+    -int petId
+    -String name
+    -String species
+    -DateTime birthday
+    -int age
+    -User owner
+    -PetNeeds needs
+    -PetStatus status
+    +feed()
+    +play()
+    +clean()
+    +sleep()
+    +checkHealth()
+    +rename(newName)
+    +evolve()
+}
+
+class PetNeeds {
+    -int hunger
+    -int thirst
+    -int energy
+    -int happiness
+    -int cleanliness
+    -int affection
+    -DateTime lastUpdate
+    +updateNeeds()
+    +decreaseOverTime()
+    +getOverallStatus()
+}
+
+class PetStatus {
+    -boolean isSick
+    -boolean isSleeping
+    -String mood
+    -String healthStatus
+    +updateStatus()
+    +recoverFromSickness()
+    +getSleepingStatus()
+}
+
+class Notification {
+    -int notificationId
+    -String message
+    -DateTime timestamp
+    -boolean isRead
+    -User recipient
+    -Pet relatedPet
+    +markAsRead()
+    +sendNotification()
+}
+
+class Food {
+    -int foodId
+    -String name
+    -int nutritionValue
+    -int cost
+    -List<String> suitableSpecies
+    +useFood(Pet)
+}
+
+class Toy {
+    -int toyId
+    -String name
+    -int funValue
+    -int cost
+    -int durability
+    -List<String> suitableSpecies
+    +useToy(Pet)
+    +decreaseDurability()
+}
+
+class Achievement {
+    -int achievementId
+    -String name
+    -String description
+    -String criteria
+    -boolean isUnlocked
+    +unlock()
+}
+
+class Store {
+    -List<Food> availableFoods
+    -List<Toy> availableToys
+    -List<Accessory> accessories
+    +purchaseItem(itemId, User)
+    +viewInventory(category)
+    +checkBalance(User)
+}
+
+class UserInventory {
+    -User owner
+    -List<Food> foods
+    -List<Toy> toys
+    -List<Accessory> accessories
+    -int coins
+    +useItem(itemId, Pet)
+    +addItem(item)
+    +removeItem(itemId)
+    +checkBalance()
+}
+
+User "1" -- "*" Pet : owns
+Pet "1" -- "1" PetNeeds : has
+Pet "1" -- "1" PetStatus : has
+User "1" -- "*" Notification : receives
+Pet "1" -- "*" Notification : triggers
+User "1" -- "1" UserInventory : has
+UserInventory "*" -- "*" Food : contains
+UserInventory "*" -- "*" Toy : contains
+User "1" -- "*" Achievement : earns
+Store "1" -- "*" Food : sells
+Store "1" -- "*" Toy : sells
+@enduml

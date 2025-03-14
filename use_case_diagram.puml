@@ -1,0 +1,74 @@
+@startuml
+left to right direction
+actor User as U
+actor Admin as A
+actor System as S
+
+rectangle "Virtual Pet Simulator" {
+  (Register/Login) as UC1
+  (Adopt Pet) as UC2
+  (Feed Pet) as UC3
+  (Play with Pet) as UC4
+  (Clean Pet) as UC5
+  (Put Pet to Sleep/Wake Up) as UC6
+  (Check Pet Health) as UC7
+  (Rename Pet) as UC8
+  (Purchase Items) as UC9
+  (Use Inventory Items) as UC10
+  (View Achievements) as UC11
+  (View Pet Stats) as UC12
+  (Evolve Pet) as UC13
+
+  (Update Pet Needs) as SUC1
+  (Send Notifications) as SUC2
+  (Handle Need Decay) as SUC3
+
+  ' Admin-specific use cases
+  (Manage User Accounts) as AC1
+  (Moderate Content) as AC2
+  (Adjust System Settings) as AC3
+  (View System Analytics) as AC4
+  (Handle Reports) as AC5
+  (Manage Store Items) as AC6
+
+  U --> UC1 : "Manages account"
+  U --> UC2 : "Selects species"
+  U --> UC3 : "Uses food"
+  U --> UC4 : "Uses toy"
+  U --> UC5 : "Grooms pet"
+  U --> UC6 : "Manages sleep cycle"
+  U --> UC7 : "Monitors health"
+  U --> UC8 : "Customizes pet"
+  U --> UC9 : "Buys from store"
+  U --> UC10 : "Applies items"
+  U --> UC11 : "Tracks progress"
+  U --> UC12 : "Checks status"
+  U --> UC13 : "Triggers growth"
+
+  S --> SUC1 : "Automatically"
+  S --> SUC2 : "Based on pet state"
+  S --> SUC3 : "Over time"
+
+  ' Admin actions
+  A --> AC1 : "Suspend/delete users"
+  A --> AC2 : "Review content"
+  A --> AC3 : "Configure rules"
+  A --> AC4 : "Monitor data"
+  A --> AC5 : "Resolve issues"
+  A --> AC6 : "Add/remove items"
+
+  ' Relationships
+  UC2 .> UC1 : <<include>> 
+  UC9 .> UC10 : <<include>>
+  UC7 .> (Give Medicine) : <<extend>>
+  UC3 .> UC10 : <<include>>
+  SUC2 .> UC12 : <<trigger>>
+
+  ' Admin-system relationships
+  AC3 .> SUC2 : <<trigger>> "Adjusts notification rules"
+  AC6 .> UC9 : <<trigger>> "Updates store inventory"
+}
+' Force Admin and System to appear on the right
+A -[hidden]-> S
+
+@enduml

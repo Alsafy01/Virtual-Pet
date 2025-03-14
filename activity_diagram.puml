@@ -1,0 +1,66 @@
+@startuml
+title Virtual Pet Care Process
+start
+
+partition "User" {
+  :Open App;
+  :Login/Register;
+  if (New User?) then (Yes)
+    :Adopt Pet (Select Species, Name);
+  else (No)
+    :Select Existing Pet;
+  endif
+  repeat
+    :Choose Action;
+    fork
+      :Feed Pet;
+        -> Update Hunger Level;
+        if (Hunger >= 80%) then (Yes)
+          :Clear Hunger Alert;
+        else (No)
+          :Trigger "Hunger Low" Notification;
+        endif
+      fork again
+      :Play with Pet;
+        -> Update Happiness Level;
+        if (Happiness >= 75%) then (Yes)
+          :Clear Boredom Alert;
+        else (No)
+          :Trigger "Play Needed" Notification;
+        endif
+      fork again
+      :Clean Pet;
+        -> Update Cleanliness Level;
+        if (Cleanliness >= 70%) then (Yes)
+          :Clear Dirty Alert;
+        else (No)
+          :Trigger "Clean Needed" Notification;
+        endif
+      fork again
+      :Check Health;
+        if (Health < 50%) then (Critical)
+          :Administer Medicine;
+          -> Update Health Status;
+        else (Healthy)
+          :Log Checkup;
+        endif
+    end fork
+  repeat while (Continue Caring?) is (Yes)
+  :Exit App;
+}
+
+partition "System" {
+  :Initialize Pet Needs;
+  while (Pet Active?) is (Yes)
+    :Decay Needs Over Time;
+    :Check Critical States;
+    if (Any Need < 20%) then (Yes)
+      :Send Emergency Notification;
+    else (No)
+      :Log Status;
+    endif
+  endwhile
+}
+
+stop
+@enduml
