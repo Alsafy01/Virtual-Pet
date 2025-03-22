@@ -1,0 +1,23 @@
+@startuml System Handles Need Decay
+title System Handles Need Decay
+actor User
+participant "System Scheduler" as Scheduler
+participant "Pet Needs Module" as Needs
+participant "Notification System" as Notify
+participant "Database" as DB
+
+Scheduler -> Needs: Trigger hourly decay
+loop For each need
+  Needs -> Needs: Calculate decay (time elapsed × rate)
+  Needs -> Needs: Update need value
+end
+
+Needs -> Notify: Check critical needs (any <20%?)
+alt Critical need detected
+
+  Notify -> User: Send push notification
+else No critical need
+  Needs -> DB: Log status update
+  DB --> Needs: Update confirmed
+end
+@enduml

@@ -1,0 +1,30 @@
+@startuml User Feeds Pet
+title User Feeds Pet
+
+actor User
+participant "Main Interface" as UI
+participant "Inventory System" as Inventory
+participant "Pet Needs Module" as Needs
+participant "Notification System" as Notify
+
+User -> UI: Select "Feed Pet"
+UI -> Inventory: Check food availability
+Inventory --> UI: Food available? (Yes/No)
+
+alt Food available
+  UI -> User: Show food options
+  User -> UI: Select food item
+  UI -> Needs: Update hunger level
+  Needs -> Needs: Apply food effects
+  Needs --> UI: Hunger level updated
+  UI -> Notify: Check if hunger < 80%
+  Notify --> UI: Clear alert (if >=80%)
+  UI -> User: Show feeding animation
+else No food
+  UI -> User: Show "Buy Food" prompt
+  User -> UI: Navigate to store
+  UI -> Inventory: Purchase food
+  Inventory --> UI: Update inventory
+  UI -> User: Return to feeding
+end
+@enduml
