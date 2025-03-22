@@ -1,4 +1,4 @@
-@startuml
+@startuml usecase_diagram
 left to right direction
 actor User as U
 actor Admin as A

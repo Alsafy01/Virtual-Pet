@@ -1,4 +1,4 @@
-@startuml
+@startuml activity_diagram
 title Virtual Pet Care Process
 start
 
